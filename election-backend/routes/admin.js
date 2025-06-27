@@ -168,6 +168,26 @@ router.get("/elections", authenticateToken, requireAdmin, async (req, res) => {
   }
 })
 
+// Get elections by id
+router.get("/elections/:id", authenticateToken, requireAdmin, async (req, res) => {
+  const { id } = req.params
+  try {
+    const election = await Election.findByPk(id)
+
+    res.json({
+      success: true,
+      data: { election },
+    })
+  } catch (error) {
+    console.error("Get election error:", error)
+    res.status(500).json({
+      success: false,
+      message: "Failed to get election",
+      error: error.message,
+    })
+  }
+})
+
 // Create election
 router.post("/elections", authenticateToken, requireAdmin, validateElection, async (req, res) => {
   try {

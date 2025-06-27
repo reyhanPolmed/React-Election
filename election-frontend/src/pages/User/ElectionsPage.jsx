@@ -12,7 +12,7 @@ function ElectionsPage() {
 
   const { data: elections, isLoading } = useQuery("elections", electionsAPI.getAll)
 
-  const electionsList = elections?.data?.elections || []
+  const electionsList = elections?.data?.data?.elections || []
 
   const getStatusBadge = (status) => {
     const statusConfig = {

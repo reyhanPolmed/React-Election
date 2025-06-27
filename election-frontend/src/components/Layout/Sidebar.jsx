@@ -73,6 +73,21 @@ function Sidebar({ isAdmin }) {
               )
             })}
           </nav>
+
+          {/* Switch Role Button for Admin */}
+          {user?.role === "admin" && (
+            <div className="px-2 pb-4">
+              <div className="border-t border-gray-200 pt-4">
+                <Link
+                  to={isAdmin ? "/dashboard" : "/admin"}
+                  className="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+                >
+                  <Settings className="mr-3 flex-shrink-0 h-5 w-5 text-gray-400 group-hover:text-gray-500" />
+                  {isAdmin ? "Mode User" : "Mode Admin"}
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Status Card */}

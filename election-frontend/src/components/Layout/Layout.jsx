@@ -4,7 +4,7 @@ import Sidebar from "./Sidebar"
 import { useAuth } from "../../context/AuthContext"
 
 // eslint-disable-next-line react/prop-types
-function Layout({ children, isAdmin = true }) {
+function Layout({ children, isAdmin = false }) {
   // eslint-disable-next-line no-unused-vars
   const { user } = useAuth()
 

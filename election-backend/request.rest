@@ -21,6 +21,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImVtY
 GET http://localhost:3001/api/admin/elections
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImVtYWlsIjoicmV5aGFuYmF0dWJhcmExQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MTAwNDU0OCwiZXhwIjoxNzUxMDkwOTQ4fQ.LLVwUcSUuCCTfViyUDlPP32a72LUsaxivuyakn6MsW4
 ###
+GET http://localhost:3001/api/admin/elections/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImVtYWlsIjoicmV5aGFuYmF0dWJhcmExQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MTAwNDU0OCwiZXhwIjoxNzUxMDkwOTQ4fQ.LLVwUcSUuCCTfViyUDlPP32a72LUsaxivuyakn6MsW4
+###
 POST http://localhost:3001/api/admin/elections
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImVtYWlsIjoicmV5aGFuYmF0dWJhcmExQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MTAwNDU0OCwiZXhwIjoxNzUxMDkwOTQ4fQ.LLVwUcSUuCCTfViyUDlPP32a72LUsaxivuyakn6MsW4
 Content-Type: application/json
@@ -56,10 +59,10 @@ POST http://localhost:3001/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "reyhanbtbr@gmail.com",
+  "email": "weslysilalahi@gmail.com",
   "password": "siantar123",
-  "fullName": "reyhan yonathan batubara",
-  "nik": "1234567891012244",
+  "fullName": "wesly silalahi",
+  "nik": "1234567891012204",
   "dateOfBirth": "2003-09-18",
   "address": "psiantar",
   "phone": "0823812371"

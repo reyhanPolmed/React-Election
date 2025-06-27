@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom"
 import { useAuth } from "./context/AuthContext"
 import Layout from "./components/Layout/Layout"
 import ProtectedRoute from "./components/Auth/ProtectedRoute"
-// import AdminRoute from "./components/Auth/AdminRoute"
+import AdminRoute from "./components/Auth/AdminRoute"
 
 // Auth Pages
 import LoginPage from "./pages/Auth/LoginPage"
@@ -48,8 +48,14 @@ function App() {
       <Route path="/results" element={<ResultsPage />} /> */}
 
       {/* Auth Routes */}
-      <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <LoginPage />} />
-      <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <RegisterPage />} />
+      <Route
+        path="/login"
+        element={user ? <Navigate to={user.role === "admin" ? "/admin" : "/dashboard"} /> : <LoginPage />}
+      />
+      <Route
+        path="/register"
+        element={user ? <Navigate to={user.role === "admin" ? "/admin" : "/dashboard"} /> : <RegisterPage />}
+      />
 
       {/* Protected User Routes */}
       <Route
@@ -66,9 +72,11 @@ function App() {
       <Route
         path="/elections"
         element={
+          <ProtectedRoute>
             <Layout>
               <ElectionsPage />
             </Layout>
+          </ProtectedRoute>
         }
       />
 
@@ -109,7 +117,7 @@ function App() {
       <Route
         path="/admin"
         element={
-            <Layout isAdmin>
+            <Layout isAdmin={true}>
               <AdminDashboardPage />
             </Layout>
         }
@@ -118,11 +126,11 @@ function App() {
       <Route
         path="/admin/users"
         element={
-          // <AdminRoute>
-            <Layout isAdmin>
+          <AdminRoute>
+            <Layout isAdmin={true}>
               <AdminUsersPage />
             </Layout>
-          // </AdminRoute>
+          </AdminRoute>
         }
       />
 

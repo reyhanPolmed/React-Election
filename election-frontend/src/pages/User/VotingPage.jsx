@@ -49,9 +49,10 @@ function VotingPage() {
     },
   })
 
-  const electionData = election?.data?.election
-  const candidatesList = candidates?.data?.candidates || []
-  const hasVoted = voteStatus?.data?.hasVoted
+  const electionData = election?.data?.data?.election
+  console.log(electionData)
+  const candidatesList = candidates?.data?.data?.candidates || []
+  const hasVoted = voteStatus?.data?.data?.hasVoted
 
   const handleVote = () => {
     if (!selectedCandidate) {
