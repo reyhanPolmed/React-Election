@@ -1,6 +1,7 @@
 "use client"
 import { X } from "lucide-react"
 
+// eslint-disable-next-line react/prop-types
 function Modal({ isOpen, onClose, title, children, size = "md" }) {
   if (!isOpen) return null
 

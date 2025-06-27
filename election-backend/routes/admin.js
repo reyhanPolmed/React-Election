@@ -59,7 +59,7 @@ router.get("/dashboard", authenticateToken, requireAdmin, async (req, res) => {
 })
 
 // Get all users
-router.get("/users", authenticateToken, requireAdmin, async (req, res) => {
+router.get("/users", authenticateToken,requireAdmin, async (req, res) => {
   try {
     const { page = 1, limit = 10, search = "", verified } = req.query
     const offset = (page - 1) * limit

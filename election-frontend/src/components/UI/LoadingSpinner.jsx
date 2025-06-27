@@ -1,3 +1,4 @@
+// eslint-disable-next-line react/prop-types
 function LoadingSpinner({ size = "md", className = "" }) {
   const sizeClasses = {
     sm: "h-4 w-4",

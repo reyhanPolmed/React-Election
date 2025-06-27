@@ -11,7 +11,7 @@ const voteRoutes = require("./routes/votes")
 const adminRoutes = require("./routes/admin")
 
 const app = express()
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3001
 
 // Security middleware
 app.use(helmet())
@@ -79,7 +79,7 @@ const startServer = async () => {
     console.error("Unable to start server:", error)
     process.exit(1)
   }
-}
+} 
 
 startServer()
 

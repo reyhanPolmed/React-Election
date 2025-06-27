@@ -52,7 +52,7 @@ export const authAPI = {
 // Elections API
 export const electionsAPI = {
   getAll: () => api.get("/admin/elections"),
-  getActive: () => api.get("/elections/active"),
+  getActive: () => api.get("/elections"),
   getById: (id) => api.get(`/elections/${id}`),
   create: (electionData) => api.post("/admin/elections", electionData),
   update: (id, electionData) => api.put(`/admin/elections/${id}`, electionData),

@@ -3,7 +3,8 @@ import { Link, useLocation } from "react-router-dom"
 import { useAuth } from "../../context/AuthContext"
 import { Home, Vote, Users, BarChart3, Settings, UserCheck, Calendar, TrendingUp, History } from "lucide-react"
 
-function Sidebar({ isAdmin = false }) {
+// eslint-disable-next-line react/prop-types
+function Sidebar({ isAdmin }) {
   const location = useLocation()
   const { user } = useAuth()
 

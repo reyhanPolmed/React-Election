@@ -30,6 +30,7 @@ function authReducer(state, action) {
   }
 }
 
+// eslint-disable-next-line react/prop-types
 export function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(authReducer, initialState)
 
@@ -56,8 +57,8 @@ export function AuthProvider({ children }) {
     try {
       dispatch({ type: "SET_LOADING", payload: true })
       const response = await authAPI.login(credentials)
-      const { user, token } = response.data
-
+      const { user, token } = await response.data.data
+      console.log(user)
       localStorage.setItem("token", token)
       dispatch({ type: "SET_TOKEN", payload: token })
       dispatch({ type: "SET_USER", payload: user })

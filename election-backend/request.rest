@@ -1,0 +1,125 @@
+// Admin Routes
+POST http://localhost:3001/api/auth/login
+Content-Type: application/json
+
+{
+  "email":"reyhanbatubara1@gmail.com",
+  "password":"reyhan123"
+}
+
+// adminRoutes
+###
+GET http://localhost:3001/api/admin/dashboard
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImVtYWlsIjoicmV5aGFuYmF0dWJhcmExQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MTAwNDU0OCwiZXhwIjoxNzUxMDkwOTQ4fQ.LLVwUcSUuCCTfViyUDlPP32a72LUsaxivuyakn6MsW4
+###
+GET http://localhost:3001/api/admin/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImVtYWlsIjoicmV5aGFuYmF0dWJhcmExQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MTAwNDU0OCwiZXhwIjoxNzUxMDkwOTQ4fQ.LLVwUcSUuCCTfViyUDlPP32a72LUsaxivuyakn6MsW4
+###
+PUT http://localhost:3001/api/admin/users/10/verify
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImVtYWlsIjoicmV5aGFuYmF0dWJhcmExQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MTAwNDU0OCwiZXhwIjoxNzUxMDkwOTQ4fQ.LLVwUcSUuCCTfViyUDlPP32a72LUsaxivuyakn6MsW4
+###
+GET http://localhost:3001/api/admin/elections
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImVtYWlsIjoicmV5aGFuYmF0dWJhcmExQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MTAwNDU0OCwiZXhwIjoxNzUxMDkwOTQ4fQ.LLVwUcSUuCCTfViyUDlPP32a72LUsaxivuyakn6MsW4
+###
+POST http://localhost:3001/api/admin/elections
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImVtYWlsIjoicmV5aGFuYmF0dWJhcmExQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MTAwNDU0OCwiZXhwIjoxNzUxMDkwOTQ4fQ.LLVwUcSUuCCTfViyUDlPP32a72LUsaxivuyakn6MsW4
+Content-Type: application/json
+
+{
+  "title":"Pemilihan Ketua Hmps TRPL",
+  "description": "pemilihan ketua HMPS TRPL 2025/2026",
+  "startDate": "2025-07-01",
+  "endDate": "2025-07-02",
+  "maxVotesPerUser": "1"
+}
+###
+PUT http://localhost:3001/api/admin/elections/1/status
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImVtYWlsIjoicmV5aGFuYmF0dWJhcmExQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MTAwNDU0OCwiZXhwIjoxNzUxMDkwOTQ4fQ.LLVwUcSUuCCTfViyUDlPP32a72LUsaxivuyakn6MsW4
+Content-Type: application/json
+
+{
+  "status":"active"
+}
+
+###
+GET http://localhost:3001/api/admin/elections/1/results
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImVtYWlsIjoicmV5aGFuYmF0dWJhcmExQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MTAwNDU0OCwiZXhwIjoxNzUxMDkwOTQ4fQ.LLVwUcSUuCCTfViyUDlPP32a72LUsaxivuyakn6MsW4
+###
+GET http://localhost:3001/api/admin/analytics/voting
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImVtYWlsIjoicmV5aGFuYmF0dWJhcmExQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MTAwNDU0OCwiZXhwIjoxNzUxMDkwOTQ4fQ.LLVwUcSUuCCTfViyUDlPP32a72LUsaxivuyakn6MsW4
+
+
+###
+
+// Auth Routes
+POST http://localhost:3001/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "reyhanbtbr@gmail.com",
+  "password": "siantar123",
+  "fullName": "reyhan yonathan batubara",
+  "nik": "1234567891012244",
+  "dateOfBirth": "2003-09-18",
+  "address": "psiantar",
+  "phone": "0823812371"
+}
+###
+POST http://localhost:3001/api/auth/login
+Content-Type: application/json
+
+{
+  "email":"reyhanbatubara@gmail.com",
+  "password":"reyhan123"
+}
+###
+GET http://localhost:3001/api/auth/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImVtYWlsIjoicmV5aGFuYmF0dWJhcmExQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MTAwNDU0OCwiZXhwIjoxNzUxMDkwOTQ4fQ.LLVwUcSUuCCTfViyUDlPP32a72LUsaxivuyakn6MsW4
+###
+PUT http://localhost:3001/api/auth/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImVtYWlsIjoicmV5aGFuYmF0dWJhcmExQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MTAwNDU0OCwiZXhwIjoxNzUxMDkwOTQ4fQ.LLVwUcSUuCCTfViyUDlPP32a72LUsaxivuyakn6MsW4
+Content-Type: application/json
+
+{
+  "fullName":"Reyhan Yonathan Batubaraa",
+  "address":"jalan Abdul Hakim No.4B",
+  "phone": "082383272872"
+}
+###
+PUT http://localhost:3001/api/auth/change-password
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImVtYWlsIjoicmV5aGFuYmF0dWJhcmExQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MTAwNDU0OCwiZXhwIjoxNzUxMDkwOTQ4fQ.LLVwUcSUuCCTfViyUDlPP32a72LUsaxivuyakn6MsW4
+Content-Type: application/json
+
+{
+  "currentPassword":"reyhan123",
+  "newPassword":"medan123"
+} 
+
+###
+
+// Candidate Routes
+GET http://localhost:3001/api/candidates/election/1
+###
+GET http://localhost:3001/api/candidates/1
+###
+POST http://localhost:3001/api/candidate
+###
+PUT http://localhost:3001/api/candidate/:id
+###
+DELETE http://localhost:3001/api/candidate/:id
+
+// VoteRoutes
+###
+POST http://localhost:3001/api/votes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoicmV5aGFuYmF0dWJhcmFAZ21haWwuY29tIiwicm9sZSI6InZvdGVyIiwiaWF0IjoxNzUxMDA4MDcxLCJleHAiOjE3NTEwOTQ0NzF9.8MaAsgwKYt97U4zlkyAuGxokyb8rwnrKx8_8eKGJwVA
+Content-Type: application/json
+
+{
+  "candidateId":"2",
+  "electionId":"1"
+} 
+###
+GET http://localhost:3001/api/votes/status/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoicmV5aGFuYmF0dWJhcmFAZ21haWwuY29tIiwicm9sZSI6InZvdGVyIiwiaWF0IjoxNzUxMDA4MDcxLCJleHAiOjE3NTEwOTQ0NzF9.8MaAsgwKYt97U4zlkyAuGxokyb8rwnrKx8_8eKGJwVA
+###
+GET http://localhost:3001/api/votes/verify/fcd6c68f2556fdf3750099d6f436781e53a56524d5aaf7278c32e43283a5311b

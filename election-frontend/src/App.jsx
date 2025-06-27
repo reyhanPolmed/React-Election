@@ -1,6 +1,6 @@
 "use client"
 import { Routes, Route, Navigate } from "react-router-dom"
-// import { useAuth } from "./context/AuthContext"
+import { useAuth } from "./context/AuthContext"
 import Layout from "./components/Layout/Layout"
 import ProtectedRoute from "./components/Auth/ProtectedRoute"
 // import AdminRoute from "./components/Auth/AdminRoute"
@@ -30,16 +30,16 @@ import HomePage from "./pages/Public/HomePage"
 // import ResultsPage from "./pages/Public/ResultsPage"
 
 function App() {
-  // const { user, loading } = useAuth()
+  const { user, loading } = useAuth()
 
-  // if (loading) {
-  //   return (
-  //     <div className="min-h-screen flex items-center justify-center">
-  //       <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
-  //     </div>
-  //   )
-  // }
-  const user = true;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
+      </div>
+    )
+  }
+  // const user = true;
   return (
     <Routes>
       {/* Public Routes */}
@@ -55,9 +55,11 @@ function App() {
       <Route
         path="/dashboard"
         element={
+          <ProtectedRoute>
             <Layout>
               <DashboardPage />
             </Layout>
+          </ProtectedRoute>
         }
       />
 

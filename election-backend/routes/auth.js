@@ -3,28 +3,15 @@ const jwt = require("jsonwebtoken")
 const { User } = require("../models")
 const { validateRegister, validateLogin } = require("../middleware/validation")
 const { authenticateToken } = require("../middleware/auth")
-
+const { Op } = require("sequelize"); 
 const router = express.Router()
 
 // Register
-router.post("/register", validateRegister, async (req, res) => {
+router.post("/register", async (req, res) => {
   try {
     const { email, password, fullName, nik, dateOfBirth, address, phone } = req.body
 
     // Check if user already exists
-    const existingUser = await User.findOne({
-      where: {
-        $or: [{ email }, { nik }],
-      },
-    })
-
-    if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: "User with this email or NIK already exists",
-      })
-    }
-
     // Create new user
     const user = await User.create({
       email,

@@ -2,6 +2,7 @@
 import { Navigate, useLocation } from "react-router-dom"
 import { useAuth } from "../../context/AuthContext"
 
+// eslint-disable-next-line react/prop-types
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth()
   const location = useLocation()

@@ -27,7 +27,7 @@ function AdminUsersPage() {
       keepPreviousData: true,
     },
   )
-
+  console.log(usersData)
   const verifyUserMutation = useMutation(adminAPI.verifyUser, {
     onSuccess: () => {
       toast.success("Pengguna berhasil diverifikasi!")
@@ -35,12 +35,12 @@ function AdminUsersPage() {
       queryClient.invalidateQueries("admin-dashboard")
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || "Gagal memverifikasi pengguna")
+      toast.error(error.response?.data?.data?.message || "Gagal memverifikasi pengguna")
     },
   })
 
-  const users = usersData?.data?.users || []
-  const pagination = usersData?.data?.pagination
+  const users = usersData?.data?.data?.users || []
+  const pagination = usersData?.data?.data?.pagination
 
   const handleVerifyUser = (userId) => {
     if (window.confirm("Apakah Anda yakin ingin memverifikasi pengguna ini?")) {
