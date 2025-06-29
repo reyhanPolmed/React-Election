@@ -4,12 +4,12 @@ const helmet = require("helmet")
 const rateLimit = require("express-rate-limit")
 require("dotenv").config()
 
-const { sequelize } = require("../models")
-const authRoutes = require("../routes/auth")
-const candidateRoutes = require("../routes/candidates")
-const voteRoutes = require("../routes/votes")
-const adminRoutes = require("../routes/admin")
-const electionRoutes = require("../routes/elections")
+const { sequelize } = require("./models")
+const authRoutes = require("./routes/auth")
+const candidateRoutes = require("./routes/candidates")
+const voteRoutes = require("./routes/votes")
+const adminRoutes = require("./routes/admin")
+const electionRoutes = require("./routes/elections")
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -76,7 +76,7 @@ app.get("/api/health", (req, res) => {
 })
 
 // Root endpoint
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.json({
     message: "Election API Server",
     version: "1.0.0",
