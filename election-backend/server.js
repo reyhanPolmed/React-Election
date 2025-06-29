@@ -106,18 +106,18 @@ app.use("*", (req, res) => {
 // Database connection and server start
 const startServer = async () => {
   try {
-    console.log("Connecting to database...")
-    await sequelize.authenticate()
-    console.log("Database connection established successfully.")
+    // console.log("Connecting to database...")
+    // await sequelize.authenticate()
+    // console.log("Database connection established successfully.")
 
-    // Sync database
-    if (process.env.NODE_ENV !== "production") {
-      await sequelize.sync({ alter: true })
-      console.log("Database synchronized successfully.")
-    } else {
-      // In production, just check connection
-      console.log("Production mode: Skipping database sync")
-    }
+    // // Sync database
+    // if (process.env.NODE_ENV !== "production") {
+    //   await sequelize.sync({ alter: true })
+    //   console.log("Database synchronized successfully.")
+    // } else {
+    //   // In production, just check connection
+    //   console.log("Production mode: Skipping database sync")
+    // }
 
     // Only start server if not in Vercel environment
     if (!process.env.VERCEL) {
@@ -135,7 +135,7 @@ const startServer = async () => {
 }
 
 // Initialize database connection
-// startServer()
+startServer()
 
 // Export for Vercel
 module.exports = app
