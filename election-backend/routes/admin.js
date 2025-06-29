@@ -15,6 +15,11 @@ router.get("/dashboard", authenticateToken, requireAdmin, async (req, res) => {
     const totalVotes = await Vote.count()
     const verifiedUsers = await User.count({ where: { isVerified: true } })
 
+    const uniqueVoters = await Vote.count({
+      distinct: true,
+      col: "userId",
+    })
+
     // Get recent votes
     const recentVotes = await Vote.findAll({
       limit: 10,
@@ -43,7 +48,8 @@ router.get("/dashboard", authenticateToken, requireAdmin, async (req, res) => {
           activeElections,
           totalVotes,
           verifiedUsers,
-          voterTurnout: totalUsers > 0 ? ((totalVotes / totalUsers) * 100).toFixed(2) : 0,
+          uniqueVoters,
+          voterTurnout: verifiedUsers > 0 ? ((uniqueVoters / verifiedUsers) * 100).toFixed(2) : 0,
         },
         recentVotes,
       },
@@ -86,12 +92,29 @@ router.get("/users", authenticateToken,requireAdmin, async (req, res) => {
       offset: Number.parseInt(offset),
       order: [["createdAt", "DESC"]],
       attributes: { exclude: ["password"] },
+      include: [
+        {
+          model: Vote,
+          as: "votes",
+          attributes: ["id", "electionId", "createdAt"],
+          required: false,
+        },
+      ],
+    })
+
+    // Add voting statistics to each user
+    const usersWithStats = users.map((user) => {
+      const userData = user.toJSON()
+      userData.totalVotes = user.votes ? user.votes.length : 0
+      userData.electionsParticipated = user.votes ? [...new Set(user.votes.map((vote) => vote.electionId))].length : 0
+      delete userData.votes // Remove votes array from response
+      return userData
     })
 
     res.json({
       success: true,
       data: {
-        users,
+        users: usersWithStats,
         pagination: {
           total: count,
           page: Number.parseInt(page),
@@ -105,6 +128,60 @@ router.get("/users", authenticateToken,requireAdmin, async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to get users",
+      error: error.message,
+    })
+  }
+})
+
+// Get user details with voting history <--- new
+router.get("/users/:id", authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    const { id } = req.params
+
+    const user = await User.findByPk(id, {
+      attributes: { exclude: ["password"] },
+      include: [
+        {
+          model: Vote,
+          as: "votes",
+          include: [
+            {
+              model: Candidate,
+              as: "candidate",
+              attributes: ["name", "candidateNumber", "party"],
+            },
+            {
+              model: Election,
+              as: "election",
+              attributes: ["title", "startDate", "endDate"],
+            },
+          ],
+          attributes: ["voteHash", "createdAt"],
+          order: [["createdAt", "DESC"]],
+        },
+      ],
+    })
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      })
+    }
+
+    const userData = user.toJSON()
+    userData.totalVotes = user.votes ? user.votes.length : 0
+    userData.electionsParticipated = user.votes ? [...new Set(user.votes.map((vote) => vote.electionId))].length : 0
+
+    res.json({
+      success: true,
+      data: { user: userData },
+    })
+  } catch (error) {
+    console.error("Get user details error:", error)
+    res.status(500).json({
+      success: false,
+      message: "Failed to get user details",
       error: error.message,
     })
   }
@@ -150,13 +227,26 @@ router.get("/elections", authenticateToken, requireAdmin, async (req, res) => {
           as: "candidates",
           attributes: ["id", "name", "candidateNumber", "voteCount"],
         },
+        {
+          model: Vote,
+          as: "votes",
+          attributes: ["id", "userId"],
+        },
       ],
       order: [["createdAt", "DESC"]],
     })
 
+    // Add statistics to each election
+    const electionsWithStats = elections.map((election) => {
+      const electionData = election.toJSON()
+      electionData.totalVotes = election.votes ? election.votes.length : 0
+      electionData.uniqueVoters = election.votes ? [...new Set(election.votes.map((vote) => vote.userId))].length : 0
+      return electionData
+    })
+
     res.json({
       success: true,
-      data: { elections },
+      data: { elections:electionsWithStats },
     })
   } catch (error) {
     console.error("Get elections error:", error)
@@ -278,7 +368,12 @@ router.get("/elections/:id/results", authenticateToken, requireAdmin, async (req
     }
 
     const totalVotes = await Vote.count({ where: { electionId: id } })
-    const totalVoters = await User.count({ where: { role: "voter", isVerified: true } })
+    const uniqueVoters = await Vote.count({
+      where: { electionId: id },
+      distinct: true,
+      col: "userId",
+    })
+    const totalEligibleVoters = await User.count({ where: { role: "voter", isVerified: true } })
 
     const results = election.candidates.map((candidate) => ({
       ...candidate.toJSON(),
@@ -298,8 +393,9 @@ router.get("/elections/:id/results", authenticateToken, requireAdmin, async (req
         results,
         statistics: {
           totalVotes,
-          totalVoters,
-          turnout: totalVoters > 0 ? ((totalVotes / totalVoters) * 100).toFixed(2) : 0,
+          uniqueVoters,
+          totalEligibleVoters,
+          turnout: totalEligibleVoters > 0 ? ((uniqueVoters / totalEligibleVoters) * 100).toFixed(2) : 0,
         },
       },
     })

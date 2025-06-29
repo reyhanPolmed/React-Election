@@ -13,16 +13,16 @@ import RegisterPage from "./pages/Auth/RegisterPage"
 import DashboardPage from "./pages/User/DashboardPage"
 import ElectionsPage from "./pages/User/ElectionsPage"
 import VotingPage from "./pages/User/VotingPage"
-// import ProfilePage from "./pages/User/ProfilePage"
-// import VoteHistoryPage from "./pages/User/VoteHistoryPage"
+import ProfilePage from "./pages/User/ProfilePage"
+import VoteHistoryPage from "./pages/User/VoteHistoryPage"
 
 // Admin Pages
 import AdminDashboardPage from "./pages/Admin/AdminDashboardPage"
 import AdminUsersPage from "./pages/Admin/AdminUsersPage"
-// import AdminElectionsPage from "./pages/Admin/AdminElectionsPage"
-// import AdminCandidatesPage from "./pages/Admin/AdminCandidatesPage"
-// import AdminResultsPage from "./pages/Admin/AdminResultsPage"
-// import AdminAnalyticsPage from "./pages/Admin/AdminAnalyticsPage"
+import AdminElectionsPage from "./pages/Admin/AdminElectionsPage"
+import AdminCandidatesPage from "./pages/Admin/AdminCandidatesPage"
+import AdminResultsPage from "./pages/Admin/AdminResultsPage"
+import AdminAnalyticsPage from "./pages/Admin/AdminAnalyticsPage"
 
 // Public Pages
 import HomePage from "./pages/Public/HomePage"
@@ -91,7 +91,7 @@ function App() {
         }
       />
 
-      {/* <Route
+      <Route
         path="/profile"
         element={
           <ProtectedRoute>
@@ -100,9 +100,9 @@ function App() {
             </Layout>
           </ProtectedRoute>
         }
-      /> */}
+      />
 
-      {/* <Route
+      <Route
         path="/vote-history"
         element={
           <ProtectedRoute>
@@ -111,15 +111,17 @@ function App() {
             </Layout>
           </ProtectedRoute>
         }
-      /> */}
+      />
 
       {/* Admin Routes */}
       <Route
         path="/admin"
         element={
+          <AdminRoute>
             <Layout isAdmin={true}>
               <AdminDashboardPage />
             </Layout>
+          </AdminRoute>
         }
       />
 
@@ -134,7 +136,7 @@ function App() {
         }
       />
 
-      {/* <Route
+      <Route
         path="/admin/elections"
         element={
           <AdminRoute>
@@ -176,7 +178,7 @@ function App() {
             </Layout>
           </AdminRoute>
         }
-      /> */}
+      />
 
       {/* 404 Route */}
       <Route

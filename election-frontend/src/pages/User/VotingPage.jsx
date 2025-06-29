@@ -25,7 +25,7 @@ function VotingPage() {
   const { data: election, isLoading: electionLoading } = useQuery(["election", electionId], () =>
     electionsAPI.getById(electionId),
   )
-
+console.log(election)
   // Fetch candidates
   const { data: candidates, isLoading: candidatesLoading } = useQuery(["candidates", electionId], () =>
     candidatesAPI.getByElection(electionId),

@@ -51,9 +51,10 @@ export const authAPI = {
 
 // Elections API
 export const electionsAPI = {
-  getAll: () => api.get("/admin/elections"),
-  getActive: () => api.get("/elections"),
-  getById: (id) => api.get(`admin/elections/${id}`),
+  getAll: () => api.get("/elections"),
+  getAllAdmin: () => api.get("/admin/elections"),
+  getActive: () => api.get("/elections/active"),
+  getById: (id) => api.get(`/elections/${id}`),
   create: (electionData) => api.post("/admin/elections", electionData),
   update: (id, electionData) => api.put(`/admin/elections/${id}`, electionData),
   updateStatus: (id, status) => api.put(`/admin/elections/${id}/status`, { status }),
@@ -74,6 +75,7 @@ export const candidatesAPI = {
 export const votesAPI = {
   cast: (voteData) => api.post("/votes", voteData),
   getStatus: (electionId) => api.get(`/votes/status/${electionId}`),
+  getHistory: () => api.get("/votes/history"), // Tambahkan ini
   verify: (voteHash) => api.get(`/votes/verify/${voteHash}`),
 }
 
@@ -81,6 +83,7 @@ export const votesAPI = {
 export const adminAPI = {
   getDashboard: () => api.get("/admin/dashboard"),
   getUsers: (params) => api.get("/admin/users", { params }),
+  getUserDetails: (userId) => api.get(`/admin/users/${userId}`), // Tambahkan ini
   verifyUser: (userId) => api.put(`/admin/users/${userId}/verify`),
   getAnalytics: (params) => api.get("/admin/analytics/voting", { params }),
 }

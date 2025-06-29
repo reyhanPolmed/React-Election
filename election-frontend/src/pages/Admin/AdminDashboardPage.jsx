@@ -9,8 +9,8 @@ function AdminDashboardPage() {
     refetchInterval: 30000, // Refresh every 30 seconds
   })
 
-  const stats = dashboardData?.data?.statistics
-  const recentVotes = dashboardData?.data?.recentVotes || []
+  const stats = dashboardData?.data?.data?.statistics
+  const recentVotes = dashboardData?.data?.data?.recentVotes || []
 
   if (isLoading) {
     return (

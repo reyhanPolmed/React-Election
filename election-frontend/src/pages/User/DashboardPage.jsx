@@ -2,7 +2,7 @@
 import { useQuery } from "react-query"
 import { Link } from "react-router-dom"
 import { useAuth } from "../../context/AuthContext"
-import { electionsAPI } from "../../services/api"
+import { electionsAPI, votesAPI } from "../../services/api"
 import Card from "../../components/UI/Card"
 import LoadingSpinner from "../../components/UI/LoadingSpinner"
 import { Vote, Calendar, CheckCircle, Clock, AlertCircle, TrendingUp } from "lucide-react"
@@ -11,8 +11,9 @@ function DashboardPage() {
   const { user } = useAuth()
 
   const { data: elections, isLoading: electionsLoading } = useQuery("active-elections", electionsAPI.getActive)
-
-  const activeElections = elections?.data?.elections || []
+  const { data: voteHistory } = useQuery("user-vote-history", votesAPI.getHistory)
+  const activeElections = elections?.data?.data?.elections || []
+  const totalVotes = voteHistory?.data?.data?.totalVotes || 0
 
   return (
     <div className="space-y-6">
@@ -55,6 +56,26 @@ function DashboardPage() {
             <div className="flex-shrink-0">
               <div
                 className={`h-12 w-12 rounded-lg flex items-center justify-center ${
+                  totalVotes > 0 ? "bg-blue-100" : "bg-gray-100"
+                }`}
+              >
+                <Vote className={`h-6 w-6 ${totalVotes > 0 ? "text-blue-600" : "text-gray-400"}`} />
+              </div>
+            </div>
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-500">Total Voting</p>
+              <p className={`text-lg font-semibold ${totalVotes > 0 ? "text-blue-600" : "text-gray-600"}`}>
+                {totalVotes} Suara
+              </p>
+            </div>
+          </Card.Content>
+        </Card>
+
+        {/* <Card>
+          <Card.Content className="flex items-center p-6">
+            <div className="flex-shrink-0">
+              <div
+                className={`h-12 w-12 rounded-lg flex items-center justify-center ${
                   user?.hasVoted ? "bg-blue-100" : "bg-gray-100"
                 }`}
               >
@@ -68,7 +89,7 @@ function DashboardPage() {
               </p>
             </div>
           </Card.Content>
-        </Card>
+        </Card> */}
 
         <Card>
           <Card.Content className="flex items-center p-6">

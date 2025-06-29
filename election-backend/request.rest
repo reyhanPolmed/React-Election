@@ -19,7 +19,7 @@ PUT http://localhost:3001/api/admin/users/10/verify
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImVtYWlsIjoicmV5aGFuYmF0dWJhcmExQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MTAwNDU0OCwiZXhwIjoxNzUxMDkwOTQ4fQ.LLVwUcSUuCCTfViyUDlPP32a72LUsaxivuyakn6MsW4
 ###
 GET http://localhost:3001/api/admin/elections
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImVtYWlsIjoicmV5aGFuYmF0dWJhcmExQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MTAwNDU0OCwiZXhwIjoxNzUxMDkwOTQ4fQ.LLVwUcSUuCCTfViyUDlPP32a72LUsaxivuyakn6MsW4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImVtYWlsIjoicmV5aGFuYmF0dWJhcmExQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MTExMTQ0NCwiZXhwIjoxNzUxMTk3ODQ0fQ.jnXcS2dZOr_JT-mqpOyl5qN9PRY_qlxeGH_9riR_gMs
 ###
 GET http://localhost:3001/api/admin/elections/1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImVtYWlsIjoicmV5aGFuYmF0dWJhcmExQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1MTAwNDU0OCwiZXhwIjoxNzUxMDkwOTQ4fQ.LLVwUcSUuCCTfViyUDlPP32a72LUsaxivuyakn6MsW4
@@ -59,12 +59,12 @@ POST http://localhost:3001/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "weslysilalahi@gmail.com",
-  "password": "siantar123",
-  "fullName": "wesly silalahi",
-  "nik": "1234567891012204",
+  "email": "Bobbynasution@gmail.com",
+  "password": "sumut123",
+  "fullName": "Bobby asution",
+  "nik": "1234567891911204",
   "dateOfBirth": "2003-09-18",
-  "address": "psiantar",
+  "address": "kota medan",
   "phone": "0823812371"
 }
 ###
@@ -72,8 +72,8 @@ POST http://localhost:3001/api/auth/login
 Content-Type: application/json
 
 {
-  "email":"reyhanbatubara@gmail.com",
-  "password":"reyhan123"
+  "email":"radiapohsinaga@gmail.com",
+  "password":"simalungun123"
 }
 ###
 GET http://localhost:3001/api/auth/profile
@@ -126,3 +126,14 @@ GET http://localhost:3001/api/votes/status/1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoicmV5aGFuYmF0dWJhcmFAZ21haWwuY29tIiwicm9sZSI6InZvdGVyIiwiaWF0IjoxNzUxMDA4MDcxLCJleHAiOjE3NTEwOTQ0NzF9.8MaAsgwKYt97U4zlkyAuGxokyb8rwnrKx8_8eKGJwVA
 ###
 GET http://localhost:3001/api/votes/verify/fcd6c68f2556fdf3750099d6f436781e53a56524d5aaf7278c32e43283a5311b
+
+###
+GET http://localhost:3001/api/elections/
+
+###
+GET http://localhost:3001/api/elections/active
+
+// election routes
+###
+GET http://localhost:3001/api/elections/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEzLCJlbWFpbCI6InJhZGlhcG9oc2luYWdhQGdtYWlsLmNvbSIsInJvbGUiOiJ2b3RlciIsImlhdCI6MTc1MTIxMDM0NCwiZXhwIjoxNzUxMjk2NzQ0fQ.fCDSY4HAaYObxOre9AyxyK52QNVJZapOjKJmkUgtaG4

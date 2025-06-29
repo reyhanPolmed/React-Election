@@ -64,10 +64,6 @@ module.exports = (sequelize) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
-      hasVoted: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-      },
       lastLogin: {
         type: DataTypes.DATE,
       },
@@ -99,6 +95,27 @@ module.exports = (sequelize) => {
     const values = Object.assign({}, this.get())
     delete values.password
     return values
+  }
+
+    User.prototype.hasVotedInElection = async function (electionId) {
+    const { Vote } = require("./index")
+    const vote = await Vote.findOne({
+      where: {
+        userId: this.id,
+        electionId: electionId,
+      },
+    })
+    return !!vote
+  }
+
+    User.prototype.getTotalVoteCount = async function () {
+    const { Vote } = require("./index")
+    const count = await Vote.count({
+      where: {
+        userId: this.id,
+      },
+    })
+    return count
   }
 
   return User

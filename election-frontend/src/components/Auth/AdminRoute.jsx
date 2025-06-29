@@ -14,6 +14,11 @@ function AdminRoute({ children }) {
     )
   }
 
+  // Jika user tidak ada, redirect ke login
+  if (!user) {
+    return <Navigate to="/login" replace />
+  }
+
   if (!user || user.role !== "admin") {
     return <Navigate to="/dashboard" replace />
   }

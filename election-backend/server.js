@@ -9,6 +9,8 @@ const authRoutes = require("./routes/auth")
 const candidateRoutes = require("./routes/candidates")
 const voteRoutes = require("./routes/votes")
 const adminRoutes = require("./routes/admin")
+const electionRoutes = require("./routes/elections")
+
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -38,6 +40,7 @@ app.use("/api/auth", authRoutes)
 app.use("/api/candidates", candidateRoutes)
 app.use("/api/votes", voteRoutes)
 app.use("/api/admin", adminRoutes)
+app.use("/api/elections", electionRoutes)
 
 // Health check
 app.get("/api/health", (req, res) => {

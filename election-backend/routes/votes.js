@@ -83,9 +83,6 @@ router.post("/", authenticateToken, requireVerified, async (req, res) => {
     // Update candidate vote count
     await candidate.increment("voteCount")
 
-    // Mark user as voted
-    await req.user.update({ hasVoted: true })
-
     res.status(201).json({
       success: true,
       message: "Vote cast successfully",
@@ -128,6 +125,46 @@ router.get("/status/:electionId", authenticateToken, async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to get vote status",
+      error: error.message,
+    })
+  }
+})
+
+// Get user's voting history <-- new
+router.get("/history", authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.id
+
+    const votes = await Vote.findAll({
+      where: { userId },
+      include: [
+        {
+          model: Candidate,
+          as: "candidate",
+          attributes: ["name", "candidateNumber", "party"],
+        },
+        {
+          model: Election,
+          as: "election",
+          attributes: ["title", "startDate", "endDate", "status"],
+        },
+      ],
+      attributes: ["voteHash", "createdAt"],
+      order: [["createdAt", "DESC"]],
+    })
+
+    res.json({
+      success: true,
+      data: {
+        votes,
+        totalVotes: votes.length,
+      },
+    })
+  } catch (error) {
+    console.error("Vote history error:", error)
+    res.status(500).json({
+      success: false,
+      message: "Failed to get vote history",
       error: error.message,
     })
   }
