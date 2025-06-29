@@ -4,12 +4,12 @@ const helmet = require("helmet")
 const rateLimit = require("express-rate-limit")
 require("dotenv").config()
 
-const { sequelize } = require("../models")
-const authRoutes = require("../routes/auth")
-const candidateRoutes = require("../routes/candidates")
-const voteRoutes = require("../routes/votes")
-const adminRoutes = require("../routes/admin")
-const electionRoutes = require("../routes/elections")
+const { sequelize } = require("./models")
+const authRoutes = require("./routes/auth")
+const candidateRoutes = require("./routes/candidates")
+const voteRoutes = require("./routes/votes")
+const adminRoutes = require("./routes/admin")
+const electionRoutes = require("./routes/elections")
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -24,7 +24,11 @@ app.use(
 
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL || "http://localhost:3000", "https://election-theta.vercel.app/", /\.vercel\.app$/],
+    origin: [
+      process.env.FRONTEND_URL || "http://localhost:3000",
+      "https://election-theta.vercel.app",
+      /\.vercel\.app$/,
+    ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
