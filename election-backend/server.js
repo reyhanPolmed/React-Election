@@ -135,7 +135,7 @@ const startServer = async () => {
 }
 
 // Initialize database connection
-startServer()
+// startServer()
 
 // Export for Vercel
 module.exports = app
