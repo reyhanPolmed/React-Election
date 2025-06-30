@@ -6,6 +6,12 @@ const dbConfig = config[env]
 
 const sequelize = new Sequelize('postgresql://postgres.skqmmhqrrojrqqmqgxef:p9j89cNwAJeXMcyJ@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres', {
     dialect: 'postgres',
+    dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
+ },
     // ... other options
 });
 
