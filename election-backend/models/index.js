@@ -4,7 +4,7 @@ const { Sequelize } = require("sequelize")
 // const env = process.env.NODE_ENV || "development"
 // const dbConfig = config[env]
 
-const sequelize = new Sequelize('postgresql://postgres.skqmmhqrrojrqqmqgxef:p9j89cNwAJeXMcyJ@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres', {
+const sequelize = new Sequelize('postgresql://postgres:p9j89cNwAJeXMcyJ@db.skqmmhqrrojrqqmqgxef.supabase.co:5432/postgres', {
     dialect: 'postgres',
     dialectOptions: {
     ssl: {
