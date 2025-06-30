@@ -59,10 +59,10 @@ POST http://localhost:3001/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "Bobbynasution@gmail.com",
+  "email": "radiapohsinaga@gmail.com",
   "password": "sumut123",
-  "fullName": "Bobby asution",
-  "nik": "1234567891911204",
+  "fullName": "Radiapoh sinaga",
+  "nik": "1234567898911204",
   "dateOfBirth": "2003-09-18",
   "address": "kota medan",
   "phone": "0823812371"
@@ -73,7 +73,7 @@ Content-Type: application/json
 
 {
   "email":"radiapohsinaga@gmail.com",
-  "password":"simalungun123"
+  "password":"sumut123"
 }
 ###
 GET http://localhost:3001/api/auth/profile

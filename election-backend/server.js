@@ -126,10 +126,10 @@ const startServer = async () => {
     if (sequelize) {
       console.log("Connecting to database...")
       console.log("Database config:", {
-        host: process.env.SUPABASE_DB_HOST,
-        database: process.env.SUPABASE_DB_NAME,
-        user: process.env.SUPABASE_DB_USER,
-        port: process.env.SUPABASE_DB_PORT,
+        host: process.env.SUPABASE_DB_HOST || "localhost",
+        database: process.env.SUPABASE_DB_NAME || "election.db",
+        user: process.env.SUPABASE_DB_USER || "root",
+        port: process.env.SUPABASE_DB_PORT || "3306",
       })
 
       await sequelize.authenticate()
