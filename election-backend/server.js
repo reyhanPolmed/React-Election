@@ -1,24 +1,24 @@
-// server.js
 require("dotenv").config()
+
 const express = require("express")
 const cors = require("cors")
 const helmet = require("helmet")
 const rateLimit = require("express-rate-limit")
-const { sequelize } = require("./models")
 
 const app = express()
 const PORT = process.env.PORT || 3001
 
-// Trust proxy (penting untuk hosting seperti Railway/Render)
+// Trust proxy (penting untuk hosting seperti Vercel)
 app.set("trust proxy", 1)
 
 // ========== MIDDLEWARE ========== //
+
 // Security headers
 app.use(
   helmet({
     contentSecurityPolicy: false,
     crossOriginEmbedderPolicy: false,
-  })
+  }),
 )
 
 // CORS
@@ -26,15 +26,20 @@ app.use(
   cors({
     origin: [
       process.env.FRONTEND_URL || "http://localhost:3000",
-      /\.vercel\.app$/, // allow any vercel frontend
-      /localhost:\d+$/, // allow local frontend
+      "https://react-election.vercel.app",
+      "https://election-theta.vercel.app",
+      /\.vercel\.app$/,
+      /localhost:\d+$/,
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
     optionsSuccessStatus: 200,
-  })
+  }),
 )
+
+// Handle preflight requests
+app.options("*", cors())
 
 // Body parser
 app.use(express.json({ limit: "10mb" }))
@@ -49,20 +54,20 @@ app.use((req, res, next) => {
 // Rate Limiter
 app.use(
   rateLimit({
-    windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
-    max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 1000,
+    windowMs: Number.parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
+    max: Number.parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 1000,
     message: {
       success: false,
       message: "Too many requests, please try again later.",
     },
     standardHeaders: true,
     legacyHeaders: false,
-    skip: (req) =>
-      req.method === "OPTIONS" || req.path === "/api/health" || req.path === "/",
-  })
+    skip: (req) => req.method === "OPTIONS" || req.path === "/api/health" || req.path === "/",
+  }),
 )
 
 // ========== HEALTH CHECK ========== //
+
 app.get("/api/health", (req, res) => {
   res.json({
     status: "OK",
@@ -77,13 +82,24 @@ app.get("/", (req, res) => {
     message: "Welcome to Election API",
     version: "1.0.0",
     timestamp: new Date().toISOString(),
+    endpoints: {
+      health: "/api/health",
+      dbTest: "/api/db-test",
+      auth: "/api/auth",
+      elections: "/api/elections",
+      candidates: "/api/candidates",
+      votes: "/api/votes",
+      admin: "/api/admin",
+    },
   })
 })
 
 app.get("/api/db-test", async (req, res) => {
   try {
+    const { sequelize } = require("./models")
     await sequelize.authenticate()
     const result = await sequelize.query("SELECT NOW() as current_time")
+
     res.json({
       success: true,
       message: "Database connected successfully",
@@ -100,8 +116,16 @@ app.get("/api/db-test", async (req, res) => {
   }
 })
 
-// ========== ROUTES (lazy load after DB ready) ========== //
-const loadRoutes = () => {
+// ========== LOAD ROUTES IMMEDIATELY ========== //
+// Load routes immediately, not after database connection
+let sequelize
+let routesLoaded = false
+
+try {
+  const { sequelize: seq } = require("./models")
+  sequelize = seq
+
+  // Load routes immediately
   const authRoutes = require("./routes/auth")
   const candidateRoutes = require("./routes/candidates")
   const voteRoutes = require("./routes/votes")
@@ -114,12 +138,54 @@ const loadRoutes = () => {
   app.use("/api/admin", adminRoutes)
   app.use("/api/elections", electionRoutes)
 
-  console.log("✅ Routes loaded")
+  routesLoaded = true
+  console.log("✅ Routes loaded successfully")
+} catch (error) {
+  console.error("❌ Failed to load models or routes:", error)
+
+  // Fallback routes when models fail to load
+  app.use("/api/auth/*", (req, res) => {
+    res.status(503).json({
+      success: false,
+      message: "Authentication service temporarily unavailable",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
+    })
+  })
+
+  app.use("/api/*", (req, res) => {
+    res.status(503).json({
+      success: false,
+      message: "Service temporarily unavailable",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
+    })
+  })
 }
 
 // ========== ERROR HANDLING ========== //
+
 app.use((err, req, res, next) => {
   console.error("Error:", err.stack)
+
+  // Handle specific Sequelize errors
+  if (err.name === "SequelizeValidationError") {
+    return res.status(400).json({
+      success: false,
+      message: "Validation error",
+      errors: err.errors.map((e) => ({
+        field: e.path,
+        message: e.message,
+      })),
+    })
+  }
+
+  if (err.name === "SequelizeUniqueConstraintError") {
+    return res.status(409).json({
+      success: false,
+      message: "Duplicate entry",
+      field: err.errors[0]?.path,
+    })
+  }
+
   res.status(err.status || 500).json({
     success: false,
     message: err.message || "Something went wrong",
@@ -135,48 +201,73 @@ app.use("*", (req, res) => {
     message: "Route not found",
     path: req.originalUrl,
     timestamp: new Date().toISOString(),
+    availableEndpoints: routesLoaded
+      ? [
+          "/api/health",
+          "/api/db-test",
+          "/api/auth/login",
+          "/api/auth/register",
+          "/api/elections",
+          "/api/candidates",
+          "/api/votes",
+          "/api/admin",
+        ]
+      : ["/api/health", "/api/db-test"],
   })
 })
 
 // ========== START SERVER ========== //
+
 const startServer = async () => {
   try {
-    console.log("🔌 Connecting to database...")
-    await sequelize.authenticate()
-    console.log("✅ Database connected")
+    if (sequelize) {
+      console.log("🔌 Connecting to database...")
+      console.log("Database config:", {
+        host: process.env.SUPABASE_DB_HOST ? "SET" : "NOT SET",
+        database: process.env.SUPABASE_DB_NAME ? "SET" : "NOT SET",
+        user: process.env.SUPABASE_DB_USER ? "SET" : "NOT SET",
+        password: process.env.SUPABASE_DB_PASSWORD ? "SET" : "NOT SET",
+        port: process.env.SUPABASE_DB_PORT ? "SET" : "NOT SET",
+      })
 
-    if (process.env.NODE_ENV === "development") {
-      await sequelize.sync({ alter: true }) // sync in dev only
-      console.log("🛠️ DB synced")
+      await sequelize.authenticate()
+      console.log("✅ Database connected successfully")
+
+      // Sync database only in development
+      if (process.env.NODE_ENV === "development") {
+        await sequelize.sync({ alter: true })
+        console.log("🛠️ Database synchronized")
+      } else {
+        console.log("Production mode: Skipping database sync")
+      }
+    } else {
+      console.log("⚠️ Starting server without database connection")
     }
 
-    loadRoutes()
-
+    // Only start server if not in Vercel environment
     if (!process.env.VERCEL) {
       app.listen(PORT, () => {
         console.log(`🚀 Server running at http://localhost:${PORT}`)
+        console.log(`Environment: ${process.env.NODE_ENV}`)
+        console.log(`Routes loaded: ${routesLoaded}`)
       })
+    } else {
+      console.log("Vercel environment detected - server ready")
     }
   } catch (error) {
-    console.error("❌ Startup error:", error.message)
+    console.error("❌ Database connection failed:", error.message)
 
-    // Fallback: show 503 if DB unavailable
-    app.use("/api/*", (req, res) => {
-      res.status(503).json({
-        success: false,
-        message: "Database unavailable - service temporarily down",
-        error: process.env.NODE_ENV === "development" ? error.message : undefined,
-        timestamp: new Date().toISOString(),
+    // Server can still run without database for health checks
+    if (!process.env.VERCEL) {
+      app.listen(PORT, () => {
+        console.log(`🚀 Server running at http://localhost:${PORT} (DB disconnected)`)
+        console.log(`Routes loaded: ${routesLoaded}`)
       })
-    })
-
-    if (!process.env.VERCEL && process.env.NODE_ENV !== "production") {
-      process.exit(1)
     }
   }
 }
 
 startServer()
 
-// For Vercel
+// Export for Vercel
 module.exports = app
