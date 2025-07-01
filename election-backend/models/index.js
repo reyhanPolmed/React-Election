@@ -4,16 +4,16 @@ const { Sequelize } = require("sequelize")
 // const env = process.env.NODE_ENV || "development"
 // const dbConfig = config[env]
 
-const sequelize = new Sequelize('postgresql://postgres:p9j89cNwAJeXMcyJ@db.skqmmhqrrojrqqmqgxef.supabase.co:5432/postgres', {
-    dialect: 'postgres',
-    dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false
-    }
- },
-    // ... other options
-});
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: "postgres",
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
+  logging: process.env.NODE_ENV === "development" ? console.log : false,
+})
 
 // Import models
 const User = require("./User")(sequelize)
