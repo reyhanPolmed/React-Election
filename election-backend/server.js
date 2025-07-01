@@ -95,6 +95,16 @@ app.get("/", (req, res) => {
 })
 
 app.get("/api/db-test", async (req, res) => {
+      try {
+      require("pg")
+    } catch (pgError) {
+      return res.status(500).json({
+        success: false,
+        message: "PostgreSQL driver not available",
+        error: "pg package is not installed or not accessible",
+        suggestion: "Please ensure pg and pg-hstore packages are installed",
+      })
+    }
   try {
     const { sequelize } = require("./models")
     await sequelize.authenticate()
