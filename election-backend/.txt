@@ -1,0 +1,3 @@
+mempelajari setiap terminologi yang ada di backend
+mempelajari konsep model sequlize ketika di koneksikan ke db supabase
+perbaiki konneksi db untuk dapat dihubungkan ke environment dan production
